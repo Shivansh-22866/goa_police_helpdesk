@@ -21,7 +21,7 @@ export default function Home() {
   const [favorite, setFavorite] = useState<boolean>(false)
   const [languages] = useState<string[]>(["en", "hi", "kn"])
   const [selectedLanguage, setSelectedLanguage] = useState<string>("en")
-  const targetText = useMyMemoryTranslate(sourceText, 'en', selectedLanguage)
+  const {translatedText, isLoading, error} = useMyMemoryTranslate(sourceText, 'en', selectedLanguage)
 
   const handleAudioPlayback = (text:string) => {
     const utterance = new SpeechSynthesisUtterance(text)
@@ -54,7 +54,7 @@ export default function Home() {
 
 
   const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(targetText);
+    navigator.clipboard.writeText(translatedText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -70,7 +70,7 @@ export default function Home() {
   const handleFavorite = () => {
     setFavorite(!favorite);
     if (!favorite) {
-      localStorage.setItem("favoriteTranslation", targetText);
+      localStorage.setItem("favoriteTranslation", translatedText);
     } else {
       localStorage.removeItem("favoriteTranslation");
     }
@@ -78,13 +78,14 @@ export default function Home() {
 
   return (
     <div>
-      <div className="h-[50rem] w-full dark:bg-black bg-white dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
+      <div className="h-full w-full dark:bg-black bg-white dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
         {/* Radial gradient for the container to give a faded look */}
-        <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+        <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_30%,black)]"></div>
         <div className="relative overflow-hidden h-screen">
-          <div className="max-w-[85rem] mx-auto px-4 sm:px-6 py-10 sm:py-24">
+          <div className="max-w-[95rem] mx-auto px-4 sm:px-6 py-10 sm:py-32">
             <div className="text-center">
               <h1 className="text-4xl sm:text-6xl font-bold text-neutral-200">
+                <Image src="/emblem.png" className='mx-auto my-4' alt="emblem" width={100} height={100} />
                 Goa Police Help<span className="text-blue-800">Desk</span>
               </h1>
               <p className="mt-3 text-neutral-400">
@@ -116,13 +117,13 @@ export default function Home() {
                   </div>
                   <div className="relative z-10 flex flex-col space-x-3 border rounded-lg shadow-lg bg-neutral-900 border-neutral-700 shadow-gray-900/20">
                       <TextArea id={'target-language'}
-                      value={targetText}
+                      value={translatedText}
                       onChange={() => {}}
                       placeholder='Target Language' />
                       <div className='flex flex-row justify-between w-full'>
                         <span className='cursor-pointer flex space-x-2 flex-row items-center'>
                           <LanguageSelector selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} languages={languages} />
-                          <IconVolume size={22} onClick={() => handleAudioPlayback(targetText)} />
+                          <IconVolume size={22} onClick={() => handleAudioPlayback(translatedText)} />
                         </span>
                         <div className='flex flex-row items-center space-x-2 pr-4 cursor-pointer'>
                           <IconCopy size={22} onClick={handleCopyToClipboard} />
