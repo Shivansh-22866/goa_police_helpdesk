@@ -26,7 +26,7 @@ const useMyMemoryTranslate = (
 
             try {
                 const encodedText = encodeURIComponent(sourceText);
-                const url = `https://api.mymemory.translated.net/get?q=${encodedText}&langpair=${sourceLang}|${targetLang}`;
+                const url = `https://api.mymemory.translated.net/get?q=${encodedText}&langpair=${sourceLang}|${targetLang}&de=mkwraith18@gmail.com`;
                 console.log('Sending request to:', url);
 
                 const response = await fetch(url);
