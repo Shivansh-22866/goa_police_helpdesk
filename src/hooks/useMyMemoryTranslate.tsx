@@ -48,8 +48,23 @@ const useMyMemoryTranslate = (
                         return translateText(retryCount + 1);
                     }
 
-                    console.log('Translation successful');
+                    console.log('Translation successful:', data.responseData.translatedText);
                     setTranslatedText(data.responseData.translatedText);
+
+                    // Check if translation is empty and try an alternative
+                    if (!data.responseData.translatedText) {
+                        console.log('Translation is empty. Trying alternative translation...');
+                        const alternativeUrl = `https://api.mymemory.translated.net/get?q=${encodedText}&langpair=${sourceLang}|${targetLang}`;
+                        const alternativeResponse = await fetch(alternativeUrl);
+                        const alternativeData = await alternativeResponse.json();
+
+                        if (alternativeData.responseStatus === 200) {
+                            console.log('Alternative translation successful:', alternativeData.responseData.translatedText);
+                            setTranslatedText(alternativeData.responseData.translatedText || 'No alternative found');
+                        } else {
+                            console.warn('Alternative translation request failed:', alternativeData.responseStatus);
+                        }
+                    }
                 } else {
                     console.warn('API returned non-200 status:', data.responseStatus);
                     throw new Error(data.responseDetails || 'Unknown translation error');

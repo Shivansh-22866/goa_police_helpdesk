@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@postlight/parser": "^2.2.3",
     "@tabler/icons-react": "^3.19.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
@@ -17,6 +18,7 @@
     "mini-svg-data-uri": "^1.4.4",
     "next": "14.2.13",
     "openai": "^4.65.0",
+    "pdfjs-dist": "^4.6.82",
     "preline": "^2.5.0",
     "react": "^18",
     "react-dom": "^18",
@@ -26,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-speech-recognition": "^3.9.5",
     "@types/regenerator-runtime": "^0.13.7",
     "postcss": "^8",
     "regenerator-runtime": "^0.14.1",
