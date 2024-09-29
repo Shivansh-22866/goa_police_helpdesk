@@ -20,10 +20,12 @@ export default function Home() {
   const [disliked, setDisliked] = useState<boolean>(false);
   const [languages] = useState<string[]>(["en", "hi", "kn", "te"]);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
-  const { translatedText } = useMyMemoryTranslate(sourceText, 'en', selectedLanguage);
+  const [speechRecognitionLanguages] = useState<string[]>(["en", "hi"])
+  const [speechRecognitionLanguage, setSpeechRecognitionLanguage] = useState<string>("en")
+  const { translatedText } = useMyMemoryTranslate(sourceText, speechRecognitionLanguage, selectedLanguage);
 
   const handleAudioPlayback = (text: string, lang: string) => {
-    listAvailableVoices()
+    console.log(text, lang)
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = lang;
     if(lang == 'kn') utterance.lang = 'hi';
@@ -80,19 +82,19 @@ export default function Home() {
 
   const handleLike = () => {
     if (liked) {
-      setLiked(false); // Deactivate if already liked
+      setLiked(false);
     } else {
-      setLiked(true);  // Activate like
-      setDisliked(false); // Deactivate dislike
+      setLiked(true);
+      setDisliked(false);
     }
   };
   
   const handleDislike = () => {
     if (disliked) {
-      setDisliked(false); // Deactivate if already disliked
+      setDisliked(false);
     } else {
-      setDisliked(true);  // Activate dislike
-      setLiked(false); // Deactivate like
+      setDisliked(true);
+      setLiked(false);
     }
   };
 
@@ -122,8 +124,9 @@ export default function Home() {
                     />
                     <div className="flex flex-row justify-between w-full">
                       <span className="cursor-pointer space-x-2 flex flex-row">
-                        <SpeechRecognitionComponent setSourceText={setSourceText} />
-                        <IconVolume size={22} onClick={() => handleAudioPlayback(sourceText, 'en-IN')} />
+                        <SpeechRecognitionComponent setSourceText={setSourceText} lang={speechRecognitionLanguage} />
+                        <LanguageSelector selectedLanguage={speechRecognitionLanguage} setSelectedLanguage={setSpeechRecognitionLanguage} languages={speechRecognitionLanguages} />
+                        <IconVolume size={22} onClick={() => handleAudioPlayback(sourceText, speechRecognitionLanguage)} />
                         <FileUpload handleFileUpload={handleFileUpload} />
                       </span>
                       <span className='text-sm pr-4'>

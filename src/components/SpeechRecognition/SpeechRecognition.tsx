@@ -4,9 +4,10 @@ import { IconMicrophone } from '@tabler/icons-react';
 
 interface SpeechRecognitionComponentProps {
     setSourceText: (text: string) => void;
+    lang: string; // Add lang prop
 }
 
-const SpeechRecognitionComponent: React.FC<SpeechRecognitionComponentProps> = ({ setSourceText }) => {
+const SpeechRecognitionComponent: React.FC<SpeechRecognitionComponentProps> = ({ setSourceText, lang }) => {
     const { transcript, listening } = useSpeechRecognition();
 
     useEffect(() => {
@@ -17,7 +18,7 @@ const SpeechRecognitionComponent: React.FC<SpeechRecognitionComponentProps> = ({
         if (listening) {
             SpeechRecognition.stopListening();
         } else {
-            SpeechRecognition.startListening();
+            SpeechRecognition.startListening({ language: lang }); // Pass language to startListening
         }
     };
 
